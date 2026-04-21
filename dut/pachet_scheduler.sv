@@ -8,9 +8,7 @@
 module pachet_scheduler #(
     parameter DATA_WIDTH = 8,
     parameter ADDR_WIDTH = 2  //for apb address
-    
-// TODO: add overhead? for req-ack data: [DATA_WIDTH + OVERHEAD : 0] data 
-// si DATA_WIDTH ramane pt intern si apb     
+      
 )(
     input clk_i,
     input rst_i,
