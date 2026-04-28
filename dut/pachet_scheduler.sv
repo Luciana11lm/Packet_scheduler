@@ -36,7 +36,7 @@ module pachet_scheduler #(
     
     input                   req3 ,
     output                  ack3 ,
-    output [DATA_WIDTH-1:0] data3,
+    output [DATA_WIDTH-1:0] data3
 );
 
 //signals
@@ -50,6 +50,7 @@ module pachet_scheduler #(
 // TODO: eventual orice 1 din reg de status rezulta pslverr
 logic [DATA_WIDTH-1:0] status_reg;
 logic q0_full, q1_full, q2_full, q3_full, qo_full, qo_mty;
+logic ack0, hndl_ack0;
 
 //config: Read-Write
 //res7, res6, [1:0] alg_sel, [3:0] client_en
