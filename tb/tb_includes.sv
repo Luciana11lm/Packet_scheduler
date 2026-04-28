@@ -26,8 +26,14 @@
 `include "../uvc/apb/apb_agent.sv"
 `include "../uvc/apb/apb_pkg.sv"
 
-// Environment
+// REQ/ACK UVC
+`include "../uvc/req_ack/req_ack_interface.sv"
+`include "../uvc/req_ack/req_ack_seq_item.sv"
+`include "../uvc/req_ack/req_ack_driver.sv"
 
+// Environment
+`include "environment.sv"
+`include "scoreboard.sv"
 // Sequences
 
 // Tests

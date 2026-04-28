@@ -8,6 +8,7 @@
 module top;
   import uvm_pkg::*;
   import apb_pkg::*;
+  import req_ack_pkg::*;
 
   // ========================================================================
   // Signals and Interfaces
@@ -29,11 +30,34 @@ module top;
     .reset(rst_apb)
   );
 
-  // REQ/ACK (temporary direct signals)
-  // TODO: replace with a dedicated req/ack interface once it is available.
-  logic req0, req1, req2, req3;
-  logic ack0, ack1, ack2, ack3;
-  logic [APB_DATA_WIDTH-1:0] data0, data1, data2, data3;
+  // REQ/ACK interfaces (4 client lanes)
+  req_ack_interface #(
+    .DATA_WIDTH(APB_DATA_WIDTH)
+  ) req_ack_if_0 (
+    .clock(clk),
+    .reset(rst_apb)
+  );
+
+  req_ack_interface #(
+    .DATA_WIDTH(APB_DATA_WIDTH)
+  ) req_ack_if_1 (
+    .clock(clk),
+    .reset(rst_apb)
+  );
+
+  req_ack_interface #(
+    .DATA_WIDTH(APB_DATA_WIDTH)
+  ) req_ack_if_2 (
+    .clock(clk),
+    .reset(rst_apb)
+  );
+
+  req_ack_interface #(
+    .DATA_WIDTH(APB_DATA_WIDTH)
+  ) req_ack_if_3 (
+    .clock(clk),
+    .reset(rst_apb)
+  );
 
   // Clock generation
   initial clk = 1'b0;
@@ -55,6 +79,34 @@ module top;
       .field_name("apb_vif"),
       .value(apb_if_inst)
     );
+
+    uvm_config_db#(virtual req_ack_interface)::set(
+      .cntxt(uvm_root::get()),
+      .inst_name("*"),
+      .field_name("req_ack_vif_0"),
+      .value(req_ack_if_0)
+    );
+
+    uvm_config_db#(virtual req_ack_interface)::set(
+      .cntxt(uvm_root::get()),
+      .inst_name("*"),
+      .field_name("req_ack_vif_1"),
+      .value(req_ack_if_1)
+    );
+
+    uvm_config_db#(virtual req_ack_interface)::set(
+      .cntxt(uvm_root::get()),
+      .inst_name("*"),
+      .field_name("req_ack_vif_2"),
+      .value(req_ack_if_2)
+    );
+
+    uvm_config_db#(virtual req_ack_interface)::set(
+      .cntxt(uvm_root::get()),
+      .inst_name("*"),
+      .field_name("req_ack_vif_3"),
+      .value(req_ack_if_3)
+    );
   end
 
   // DUT
@@ -72,18 +124,18 @@ module top;
     .prdata_o  (apb_if_inst.prdata),
     .pready_o  (apb_if_inst.pready),
     .pslverr_o (apb_if_inst.pslverr),
-    .req0      (req0),
-    .ack0      (ack0),
-    .data0     (data0),
-    .req1      (req1),
-    .ack1      (ack1),
-    .data1     (data1),
-    .req2      (req2),
-    .ack2      (ack2),
-    .data2     (data2),
-    .req3      (req3),
-    .ack3      (ack3),
-    .data3     (data3)
+    .req0      (req_ack_if_0.req),
+    .ack0      (req_ack_if_0.ack),
+    .data0     (req_ack_if_0.data),
+    .req1      (req_ack_if_1.req),
+    .ack1      (req_ack_if_1.ack),
+    .data1     (req_ack_if_1.data),
+    .req2      (req_ack_if_2.req),
+    .ack2      (req_ack_if_2.ack),
+    .data2     (req_ack_if_2.data),
+    .req3      (req_ack_if_3.req),
+    .ack3      (req_ack_if_3.ack),
+    .data3     (req_ack_if_3.data)
   );
 
 endmodule : top
