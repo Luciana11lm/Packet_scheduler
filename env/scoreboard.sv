@@ -11,6 +11,8 @@ class scoreboard extends uvm_scoreboard;
 
   `uvm_component_utils(scoreboard)
 
+  import req_ack_pkg::*;
+
   // ============================================================================
   // TLM Ports
   // ============================================================================
@@ -21,7 +23,7 @@ class scoreboard extends uvm_scoreboard;
   uvm_analysis_imp_apb_slv #(apb_seq_item) apb_mst_port;
 
   // Request-Acknowledge analysis port - receives req/ack transactions
-  uvm_analysis_imp_req_ack #(apb_seq_item) req_ack_port; // TODO Sergiu: define req_ack_seq_item and corresponding analysis port
+  uvm_analysis_imp_req_ack #(req_ack_seq_item) req_ack_port;
 
   // ============================================================================
   // Properties
@@ -39,15 +41,6 @@ class scoreboard extends uvm_scoreboard;
   // ============================================================================
   // Register model (simple mirrored variables + prediction)
   // ============================================================================
-  localparam bit [1:0] DATA_OUT_ADDR = 2'd0;
-  localparam bit [1:0] STATUS_ADDR   = 2'd1;
-  localparam bit [1:0] CFG_ADDR      = 2'd2;
-  localparam bit [1:0] WEIGHT_ADDR   = 2'd3;
-
-  localparam bit [7:0] DATA_OUT_RST  = 8'h00;
-  localparam bit [7:0] STATUS_RST    = 8'h04;
-  localparam bit [7:0] CFG_RST       = 8'h0F;
-  localparam bit [7:0] WEIGHT_RST    = 8'hE4;
 
   // Mirrored register values (expected model)
   bit [7:0] data_out_reg;
@@ -74,7 +67,7 @@ class scoreboard extends uvm_scoreboard;
 
     apb_transactions = 0;
     mismatches = 0;
-    queue_status = STATUS_RST;
+    queue_status = STATUS_REG.reset_value;
 
     reset_reg_model();
 
@@ -112,7 +105,7 @@ class scoreboard extends uvm_scoreboard;
     compare_transactions();
   endfunction : write_apb_slv
 
-  function void write_req_ack(apb_seq_item item);
+  function void write_req_ack(req_ack_seq_item item);
     `uvm_info("SB_REQ_ACK", $sformatf("REQ-ACK Transaction received: %s", item.convert2string()), UVM_MEDIUM)
     // Process request-acknowledge transactions here
   endfunction : write_req_ack
@@ -128,19 +121,19 @@ class scoreboard extends uvm_scoreboard;
   endfunction : check_queue_status
 
   function void reset_reg_model();
-    data_out_reg = DATA_OUT_RST;
-    status_reg   = STATUS_RST;
-    cfg_reg      = CFG_RST;
-    weight_reg   = WEIGHT_RST;
+    data_out_reg = DATA_OUT_REG.reset_value;
+    status_reg   = STATUS_REG.reset_value;
+    cfg_reg      = CFG_REG.reset_value;
+    weight_reg   = WEIGHTS_REG.reset_value;
   endfunction : reset_reg_model
 
   function bit [7:0] get_exp_read_data(bit [1:0] addr, output bit valid_addr);
     valid_addr = 1'b1;
     case (addr)
-      DATA_OUT_ADDR: get_exp_read_data = data_out_reg;
-      STATUS_ADDR  : get_exp_read_data = status_reg;
-      CFG_ADDR     : get_exp_read_data = cfg_reg;
-      WEIGHT_ADDR  : get_exp_read_data = weight_reg;
+      DATA_OUT_REG.address: get_exp_read_data = data_out_reg;
+      STATUS_REG.address  : get_exp_read_data = status_reg;
+      CFG_REG.address     : get_exp_read_data = cfg_reg;
+      WEIGHTS_REG.address : get_exp_read_data = weight_reg;
       default: begin
         valid_addr        = 1'b0;
         get_exp_read_data = 8'h00;
@@ -199,9 +192,9 @@ class scoreboard extends uvm_scoreboard;
     illegal_write  = 1'b0;
 
     case (addr)
-      CFG_ADDR   : cfg_reg    = wdata;
-      WEIGHT_ADDR: weight_reg = wdata;
-      DATA_OUT_ADDR, STATUS_ADDR: begin // Read-Only registers
+      CFG_REG.address   : cfg_reg    = wdata;
+      WEIGHTS_REG.address: weight_reg = wdata;
+      DATA_OUT_REG.address, STATUS_REG.address: begin // Read-Only registers
         illegal_write = 1'b1;
         ro_write_attempts++;
       end
