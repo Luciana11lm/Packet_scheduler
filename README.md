@@ -1,7 +1,7 @@
 # Packet Scheduler
 
 [![Documentation](https://img.shields.io/badge/Project%20Documentation-blue?style=flat&logo=googledocs&logoColor=white&labelColor=4285F4&color=blue)](https://docs.google.com/document/d/1tKyBlKo1QwEhdfcWfyFoxkVA3dFcelzm/edit)
-
+[![Azure%20Boards](https://img.shields.io/badge/Azure%20Boards-Tracking-blue?style=flat&logo=azuredevops&logoColor=white&labelColor=0078D7&color=0A66C2)](https://dev.azure.com/VerificareaCircuitelorIntegrate/2026%20TTVF%20Controler%20de%20intreruperi/_boards/board/t/2026%20TTVF%20Controler%20de%20intreruperi%20Team/Stories)
 
 Packet Scheduler is a hardware block designed to **collect, arbitrate, and order data packet requests** coming from **four independent clients** (`Client 0` ... `Client 3`).
 
