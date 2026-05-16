@@ -11,11 +11,12 @@ class apb_agent extends uvm_agent;
 
   `uvm_component_utils(apb_agent)
 
-  apb_seqencer          apb_seqr    ; // APB sequencer
-  apb_driver            apb_drv     ; // APB driver
-  apb_monitor           apb_mon     ; // APB monitor
-  virtual apb_interface apb_vif     ; // APB virtual interface
-  apb_config_object     apb_cfg_obj ; // APB configuration object
+  apb_seqencer           apb_seqr    ; // APB sequencer
+  apb_driver             apb_drv     ; // APB driver
+  apb_monitor            apb_mon     ; // APB monitor
+  virtual apb_interface  apb_vif     ; // APB virtual interface
+  apb_config_object      apb_cfg_obj ; // APB configuration object
+  apb_coverage_collector apb_cov     ; // APB coverage collector
 
   // CONSTRUCTOR
   //==================================================================================
@@ -45,6 +46,7 @@ class apb_agent extends uvm_agent;
       uvm_config_db#(virtual apb_interface)::set(this, "apb_drv", "apb_vif"    , apb_vif    );
       uvm_config_db#(apb_config_object)    ::set(this, "apb_drv", "apb_cfg_obj", apb_cfg_obj);
     end
+    apb_cov = apb_coverage_collector::type_id::create("apb_cov", this);
   endfunction : build_phase
   //==================================================================================
 
@@ -54,6 +56,7 @@ class apb_agent extends uvm_agent;
     super.connect_phase(phase);
     if(apb_cfg_obj.is_active == UVM_ACTIVE) 
       apb_drv.seq_item_port.connect(apb_seqr.seq_item_export); 
+    apb_mon.apb_ap.connect(apb_cov.analysis_export);
   endfunction : connect_phase
   //==================================================================================
 
