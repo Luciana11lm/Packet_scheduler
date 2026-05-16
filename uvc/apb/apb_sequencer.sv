@@ -6,7 +6,7 @@
                 driver. Supports read/write transfers on the APB bus.
 ===================================================================================*/
 
-class apb_sequencer extends uvm_sequencer #(apb_seq_item)ș
+class apb_sequencer extends uvm_sequencer #(apb_seq_item);
 
   `uvm_component_utils(apb_sequencer)
 

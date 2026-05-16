@@ -2,7 +2,14 @@
   Project     : UVM_APB_agent
   File name   : apb_seq_item.sv 
   Author      : Mitu Mariana-Luciana
-  Description : 
+  Description : APB sequence item used to model a single APB transaction. 
+                The item contains configurable transaction attributes such as 
+                * start delay    - number of clock cycles before transaction start 
+                * ready delay    - number of clock cycles for wait states
+                * address        - address for the request
+                * data           - data for the request
+                * operation type - read or write
+                * slave error    - error status
 ===================================================================================*/
 
 class apb_seq_item extends uvm_sequence_item;
@@ -19,13 +26,13 @@ class apb_seq_item extends uvm_sequence_item;
     `uvm_field_int (rdy_delay             , UVM_ALL_ON             )
     `uvm_field_int (address               , UVM_ALL_ON | UVM_HEX   )
     `uvm_field_int (data                  , UVM_ALL_ON | UVM_HEX   )
-    `uvm_field_enum(operation_t, operation, UVM_AL_ON  | UVM_STRING)
+    `uvm_field_enum(operation_t, operation, UVM_ALL_ON | UVM_STRING)
     `uvm_field_int (error                 , UVM_ALL_ON             )
   `uvm_object_utils_end
 
   // CONSTRUCTOR
   //=================================================================================
-  function new(strin name = "apb_seq_item");
+  function new(string name = "apb_seq_item");
     super.new(name);
   endfunction : new
   //=================================================================================

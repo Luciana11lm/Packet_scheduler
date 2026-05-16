@@ -76,16 +76,20 @@ class apb_monitor extends uvm_monitor;
   //==================================================================================
   task monitor_apb_item();
     wait(apb_vif.reset == 1'b0);
+    tr_delay  = 0;
+    rdy_delay = 0;
+
     while(apb_rcv_mp.psel == 1'b0) begin
       tr_delay++;
       @(posedge apb_vif.clock);
     end
-    apb_pkt.tr_dealy = tr_dealy;
+    apb_pkt.tr_delay = tr_delay;
     @(posedge apb_rcv_mp.penable);
     while(apb_rcv_mp.pready == 1'b0) begin
       rdy_delay++;
       @(posedge apb_vif.clock);
     end
+    apb_pkt.rdy_delay = rdy_delay;
     if(apb_rcv_mp.psel & apb_rcv_mp.penable & apb_rcv_mp.pready) begin
       apb_pkt.address   = apb_rcv_mp.paddr;
       apb_pkt.operation = operation_t'(apb_rcv_mp.pwrite);
