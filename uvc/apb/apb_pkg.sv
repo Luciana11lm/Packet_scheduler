@@ -14,6 +14,7 @@ package apb_pkg;
    `include "spi_types_params.sv"
    `include "apb_seq_item.sv"
    `include "apb_config_object.sv"
+   `include "apb_coverage_collector.sv"
    `include "apb_sequence_lib.sv"
    `include "apb_sequencer.sv"
    `include "apb_driver.sv"

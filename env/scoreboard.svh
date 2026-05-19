@@ -16,8 +16,8 @@ class scoreboard extends uvm_scoreboard;
   // ============================================================================
   // TLM Ports
   // ============================================================================
-  uvm_analysis_imp_decl(_apb_slv);
-  uvm_analysis_imp_decl(_req_ack);
+  `uvm_analysis_imp_decl(_apb_slv);
+  `uvm_analysis_imp_decl(_req_ack);
 
   // APB master analysis port - receives APB transactions
   uvm_analysis_imp_apb_slv #(apb_seq_item) apb_mst_port;

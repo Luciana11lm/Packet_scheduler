@@ -5,7 +5,7 @@
 // Description : Packet scheduler with APB register interface and 4 req/ack client inputs.
 //               Data direction: clients -> input FIFOs -> scheduler -> output FIFO -> APB read.
 // ---------------------------------------------------------------------------------------------------------------------
-
+`include "fifo.v"
 module pachet_scheduler #(
     parameter DATA_WIDTH = 8,
     parameter ADDR_WIDTH = 2

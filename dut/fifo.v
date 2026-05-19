@@ -1,3 +1,6 @@
+`ifndef FIFO_COMPILED
+`define FIFO_COMPILED
+
 module fifo #(
     parameter FIFO_DEPTH = 10,  // No of fifo lines "N"
     parameter FIFO_WIDTH = 8,   // No of fifo bits "M"
@@ -96,3 +99,5 @@ module fifo #(
 
 
 endmodule
+
+`endif

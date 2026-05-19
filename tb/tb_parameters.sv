@@ -24,11 +24,11 @@ parameter APB_DATA_WIDTH  = 8;       // APB data width
 parameter FIFO_DEPTH     = 8;       // FIFO depth
 parameter FIFO_WIDTH     = 8;       // FIFO data width
 
-typedef struct pkt_sch_register {
+typedef struct {
   bit [APB_ADDR_WIDTH-1:0] address;
   bit [APB_DATA_WIDTH-1:0] reset_value;
   bit writeable;
-};
+} pkt_sch_register;
 
 // ============================================================================
 // Register Definitions
