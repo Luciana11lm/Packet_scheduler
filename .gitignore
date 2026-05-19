@@ -1,1 +1,3 @@
 .vscode/settings.json
+verif/*
+!verif/Packet_Scheduler.xpr
